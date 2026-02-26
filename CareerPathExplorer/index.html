@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Explorer - Home</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-compass"></i> Career Explorer
+            </a>
+            
+            <div class="nav-links">
+                <a href="index.html" class="nav-link active"><i class="fas fa-home"></i> Home</a>
+                <a href="explorer.html" class="nav-link"><i class="fas fa-search"></i> Explore</a>
+                <a href="journey.html" class="nav-link"><i class="fas fa-map"></i> My Journey</a>
+                <a href="quiz.html" class="nav-link"><i class="fas fa-question-circle"></i> Quiz</a>
+               <!-- Language dropdown -->
+<div class="nav-dropdown">
+    <button class="lang-btn">
+        <i class="fas fa-globe"></i> 
+        <span class="current-language">EN</span>
+    </button>
+    <div class="lang-dropdown">
+        <button onclick="window.TranslationService?.changeLanguage('en')">English</button>
+        <button onclick="window.TranslationService?.changeLanguage('es')">Español</button>
+        <button onclick="window.TranslationService?.changeLanguage('fr')">Français</button>
+        <button onclick="window.TranslationService?.changeLanguage('de')">Deutsch</button>
+        <button onclick="window.TranslationService?.changeLanguage('zh')">中文</button>
+        <button onclick="window.TranslationService?.changeLanguage('ja')">日本語</button>
+        <button onclick="window.TranslationService?.changeLanguage('hi')">हिन्दी</button>
+    </div>
+</div>
+              <!-- Auth buttons (shown when NOT logged in) -->
+<div id="auth-buttons" style="display:none;">
+    <a href="login.html" class="btn btn-outline">Login</a>
+    <a href="signup.html" class="btn btn-primary">Sign Up</a>
+</div>
+
+<!-- User menu (shown when logged in) -->
+<div id="user-menu" style="display: none;">
+    <span id="username"></span>
+    <button onclick="logout()" class="btn btn-outline">Logout</button>
+</div>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 data-translate="welcome">Discover Your Dream Career</h1>
+            <p data-translate="tagline">Take our quiz, explore career paths, and build your professional journey with AI-powered guidance.</p>
+            <div class="hero-buttons">
+                <a href="quiz.html" class="btn btn-primary btn-large">
+                    <i class="fas fa-play"></i> Start Career Quiz
+                </a>
+                <a href="explorer.html" class="btn btn-secondary btn-large">
+                    <i class="fas fa-binoculars"></i> Explore Careers
+                </a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="assets/images/logo.png" alt="Career Exploration">
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <h2 data-translate="features">Why Career Explorer?</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3 data-translate="feature1_title">Smart Career Quiz</h3>
+                <p data-translate="feature1_desc">10 questions to match you with perfect career options based on your personality.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-road"></i>
+                </div>
+                <h3 data-translate="feature2_title">Personalized Paths</h3>
+                <p data-translate="feature2_desc">Step-by-step learning roadmap for each career with resources.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-language"></i>
+                </div>
+                <h3 data-translate="feature3_title">Multi-language</h3>
+                <p data-translate="feature3_desc">Use in your preferred language with AWS Translate integration.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-microphone"></i>
+                </div>
+                <h3 data-translate="feature4_title">Voice Guidance</h3>
+                <p data-translate="feature4_desc">Speech-to-text for quiz answers using AWS Transcribe.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p data-translate="footer">&copy; 2024 Career Explorer. Built with AWS Serverless.</p>
+        <div class="footer-links">
+            <a href="#" data-translate="privacy">Privacy Policy</a>
+            <a href="#" data-translate="terms">Terms of Service</a>
+            <a href="#" data-translate="contact">Contact</a>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    
+   <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1484.0.min.js"></script>
+
+<!-- Cognito SDK -->
+
+
+<script src="js/config.js"></script>
+
+
+<script src="js/api.js"></script>
+<script src="js/translate.js"></script>
+
+
+<script src="js/auth.js"></script>
+
+    
+   <script>
+  // 🔐 LOGIN PROTECTION FOR INDEX PAGE
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const idToken = localStorage.getItem("idToken");
+
+    // ❌ Not logged in → redirect to login page
+    if (!idToken) {
+      window.location.href = "login.html";
+      return;
+    }
+
+    // ✅ Logged in → update UI
+    const authButtons = document.getElementById("auth-buttons");
+    const userMenu = document.getElementById("user-menu");
+    const usernameSpan = document.getElementById("username");
+
+    if (authButtons && userMenu) {
+      authButtons.style.display = "none";
+      userMenu.style.display = "flex";
+
+      try {
+        const tokenPayload = JSON.parse(atob(idToken.split(".")[1]));
+        usernameSpan.textContent = tokenPayload.email || "User";
+      } catch (e) {
+        localStorage.clear();
+        window.location.href = "login.html";
+      }
+    }
+  });
+
+  // 🚪 Logout function
+  function logout() {
+    localStorage.clear();
+
+    window.location.href =
+      "https://ap-south-1fzlcxymni.auth.ap-south-1.amazoncognito.com/logout" +
+      "?client_id=no8u3mv9ivnuhj6b0c5e20jfp" +
+      "&logout_uri=https://dyrse1k3951wn.cloudfront.net/login.html";
+  }
+</script>
+
+
+
+<script>
+// Apply translation when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // If translation service is available and language is not English
+    if (window.TranslationService && TranslationService.currentLanguage !== 'en') {
+        console.log('🔄 Applying translation to page...');
+        
+        // Small delay to ensure DOM is fully loaded
+        setTimeout(() => {
+            translatePageContent();
+        }, 500);
+    }
+});
+
+// Function to translate all text content on the page
+async function translatePageContent() {
+    if (!window.TranslationService) return;
+    
+    const elementsToTranslate = [
+        // Navigation and headers
+        ...document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, a, button, span, label'),
+        // Specific elements by class or ID
+        ...document.querySelectorAll('.nav-link, .btn, .logo, .footer-text'),
+        // Hero section
+        ...document.querySelectorAll('.hero-title, .hero-subtitle, .hero-description'),
+        // Career cards
+        ...document.querySelectorAll('.career-card h3, .career-card p, .career-card .career-category'),
+        // Filter buttons
+        ...document.querySelectorAll('.filter-btn'),
+        // Placeholder text
+        document.querySelector('input[placeholder]')
+    ].filter(el => el && el.innerText && el.innerText.trim() !== '');
+    
+    console.log(`Found ${elementsToTranslate.length} elements to translate`);
+    
+    for (const element of elementsToTranslate) {
+        // Skip elements that should not be translated
+        if (element.tagName === 'INPUT' && element.placeholder) {
+            // Translate placeholder
+            const originalPlaceholder = element.placeholder;
+            if (originalPlaceholder && !originalPlaceholder.startsWith('_translated_')) {
+                try {
+                    const translated = await TranslationService.translateText(originalPlaceholder);
+                    element.placeholder = translated;
+                } catch (error) {
+                    console.warn('Failed to translate placeholder:', error);
+                }
+            }
+        } else if (element.innerText && !element.innerText.startsWith('_translated_')) {
+            // Translate inner text
+            const originalText = element.innerText;
+            if (originalText && !originalText.match(/^\d+$/) && originalText.length > 1) {
+                try {
+                    const translated = await TranslationService.translateText(originalText);
+                    element.innerText = translated;
+                } catch (error) {
+                    console.warn('Failed to translate text:', error);
+                }
+            }
+        }
+    }
+    
+    console.log('✅ Page translation complete');
+}
+
+// Listen for language changes
+document.addEventListener('languageChanged', function() {
+    console.log('Language changed, reloading page...');
+    window.location.reload();
+});
+</script>
+
+</body>
+</html>

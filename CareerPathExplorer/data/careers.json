@@ -1,0 +1,152 @@
+{
+  "software-developer": {
+    "id": "software-developer",
+    "title": "Software Developer",
+    "category": "Technology",
+    "description": "Design, develop, test, and maintain software applications and systems. Software developers create solutions for various platforms including web, mobile, and desktop.",
+    "salary": "$70,000 - $150,000",
+    "demand": "Very High",
+    "growth": "22% (Much faster than average)",
+    "education": "Bachelor's degree in Computer Science or related field",
+    "skills": ["JavaScript", "Python", "Java", "Git", "Database Design", "Problem Solving", "Algorithms", "System Design"],
+    "path": [
+      {
+        "step": 1,
+        "title": "Learn Programming Fundamentals",
+        "duration": "3-6 months",
+        "description": "Start with basic programming concepts using Python or JavaScript",
+        "resources": ["Codecademy", "freeCodeCamp", "Coursera - Python for Everybody"]
+      },
+      {
+        "step": 2,
+        "title": "Choose a Specialization",
+        "duration": "6-12 months",
+        "description": "Focus on frontend, backend, mobile, or full-stack development",
+        "resources": ["The Odin Project", "Full Stack Open", "AWS Training"]
+      },
+      {
+        "step": 3,
+        "title": "Build Portfolio Projects",
+        "duration": "6 months",
+        "description": "Create 3-5 substantial projects to showcase your skills",
+        "resources": ["GitHub", "Dev.to", "Hashnode"]
+      },
+      {
+        "step": 4,
+        "title": "Learn Version Control & Collaboration",
+        "duration": "1-2 months",
+        "description": "Master Git, GitHub, and collaborative development workflows",
+        "resources": ["Git Documentation", "GitHub Learning Lab", "Atlassian Git Tutorials"]
+      },
+      {
+        "step": 5,
+        "title": "Practice Algorithm & Data Structures",
+        "duration": "3-6 months",
+        "description": "Prepare for technical interviews with LeetCode and HackerRank",
+        "resources": ["LeetCode", "HackerRank", "Cracking the Coding Interview"]
+      },
+      {
+        "step": 6,
+        "title": "Apply for Jobs & Internships",
+        "duration": "3-6 months",
+        "description": "Start applying, networking, and interviewing",
+        "resources": ["LinkedIn", "AngelList", "Glassdoor", "Local Meetups"]
+      }
+    ],
+    "resources": [
+      {
+        "name": "freeCodeCamp",
+        "url": "https://freecodecamp.org",
+        "type": "Free Learning Platform",
+        "description": "Free coding challenges and projects"
+      },
+      {
+        "name": "AWS Training",
+        "url": "https://aws.amazon.com/training/",
+        "type": "Cloud Certification",
+        "description": "Free and paid cloud computing courses"
+      },
+      {
+        "name": "GitHub Student Pack",
+        "url": "https://education.github.com/pack",
+        "type": "Developer Tools",
+        "description": "Free access to developer tools for students"
+      }
+    ]
+  },
+  "data-analyst": {
+    "id": "data-analyst",
+    "title": "Data Analyst",
+    "category": "Technology",
+    "description": "Collect, process, and analyze data to help organizations make informed decisions. Data analysts work with statistical tools, databases, and visualization software.",
+    "salary": "$60,000 - $110,000",
+    "demand": "High",
+    "growth": "25% (Much faster than average)",
+    "education": "Bachelor's degree in Statistics, Mathematics, or related field",
+    "skills": ["Excel", "SQL", "Python", "R", "Statistics", "Data Visualization", "Tableau", "Power BI"],
+    "path": [
+      {
+        "step": 1,
+        "title": "Learn Statistics & Mathematics",
+        "duration": "3-4 months",
+        "description": "Master basic statistics, probability, and algebra",
+        "resources": ["Khan Academy Statistics", "Coursera - Statistics with R"]
+      },
+      {
+        "step": 2,
+        "title": "Master Excel & SQL",
+        "duration": "2-3 months",
+        "description": "Learn advanced Excel functions and database querying with SQL",
+        "resources": ["Mode Analytics SQL Tutorial", "Excel Jet", "SQLZoo"]
+      },
+      {
+        "step": 3,
+        "title": "Learn Python/R for Data Analysis",
+        "duration": "4-6 months",
+        "description": "Master data manipulation libraries like Pandas and visualization with Matplotlib/Seaborn",
+        "resources": ["DataCamp", "Kaggle Learn", "Real Python"]
+      },
+      {
+        "step": 4,
+        "title": "Data Visualization Tools",
+        "duration": "2-3 months",
+        "description": "Learn Tableau, Power BI, or Looker for creating dashboards",
+        "resources": ["Tableau Public", "Microsoft Learn", "Looker Documentation"]
+      },
+      {
+        "step": 5,
+        "title": "Build Analysis Portfolio",
+        "duration": "3-4 months",
+        "description": "Complete real-world data analysis projects using public datasets",
+        "resources": ["Kaggle Datasets", "Google Dataset Search", "UCI Machine Learning Repository"]
+      },
+      {
+        "step": 6,
+        "title": "Get Certified & Apply",
+        "duration": "2-3 months",
+        "description": "Obtain certifications and start applying for analyst positions",
+        "resources": ["Google Data Analytics Certificate", "IBM Data Analyst Professional Certificate"]
+      }
+    ],
+    "resources": [
+      {
+        "name": "Kaggle",
+        "url": "https://kaggle.com",
+        "type": "Data Science Community",
+        "description": "Datasets, competitions, and learning resources"
+      },
+      {
+        "name": "Google Data Analytics Certificate",
+        "url": "https://grow.google/certificates/data-analytics/",
+        "type": "Professional Certificate",
+        "description": "Beginner-friendly data analytics certification"
+      },
+      {
+        "name": "Tableau Public",
+        "url": "https://public.tableau.com",
+        "type": "Visualization Platform",
+        "description": "Free platform to create and share data visualizations"
+      }
+    ]
+  }
+}

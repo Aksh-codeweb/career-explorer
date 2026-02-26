@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Journey - Career Explorer</title>
+
+    <!-- Styles -->
+     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/journey.css">
+  
+
+
+    <!-- Page-specific styling -->
+    
+</head>
+
+<body>
+
+<!-- ================= NAVIGATION ================= -->
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            <i class="fas fa-compass"></i> Career Explorer
+        </a>
+
+        <div class="nav-links">
+            <a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a>
+            <a href="explorer.html" class="nav-link"><i class="fas fa-search"></i> Explore</a>
+            <a href="journey.html" class="nav-link active"><i class="fas fa-map"></i> My Journey</a>
+            <a href="quiz.html" class="nav-link"><i class="fas fa-question-circle"></i> Quiz</a>
+
+            <!-- Language dropdown -->
+           <!-- Language dropdown -->
+<div class="nav-dropdown">
+    <button class="lang-btn">
+        <i class="fas fa-globe"></i> 
+        <span class="current-language">EN</span>
+    </button>
+    <div class="lang-dropdown">
+        <button onclick="window.TranslationService?.changeLanguage('en')">English</button>
+        <button onclick="window.TranslationService?.changeLanguage('es')">Español</button>
+        <button onclick="window.TranslationService?.changeLanguage('fr')">Français</button>
+        <button onclick="window.TranslationService?.changeLanguage('de')">Deutsch</button>
+        <button onclick="window.TranslationService?.changeLanguage('zh')">中文</button>
+        <button onclick="window.TranslationService?.changeLanguage('ja')">日本語</button>
+        <button onclick="window.TranslationService?.changeLanguage('hi')">हिन्दी</button>
+    </div>
+</div>
+
+            <!-- When NOT logged in -->
+            <div id="auth-buttons" style="display:none;">
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <a href="signup.html" class="btn btn-primary">Sign Up</a>
+            </div>
+
+            <!-- When logged in -->
+            <div id="user-menu" style="display:none;">
+                <span id="username"></span>
+                <button onclick="logout()" class="btn btn-outline">Logout</button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- ================= JOURNEY CONTENT ================= -->
+<div class="journey-container">
+
+    <div class="journey-header">
+        <h1><i class="fas fa-map-marked-alt"></i> My Career Journey</h1>
+        <p>Track your saved careers, quiz results, and progress</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="journey-tabs">
+        <button class="journey-tab active" data-tab="careers">Saved Careers</button>
+        <button class="journey-tab" data-tab="quiz-results">Quiz Results</button>
+        <button class="journey-tab" data-tab="progress">Progress Tracking</button>
+    </div>
+
+    <!-- Saved Careers -->
+    <div id="careers-tab" class="journey-content active">
+        <div id="saved-careers-list"></div>
+
+        <div id="no-careers" class="empty-state" style="display:none;">
+            <h3>No Saved Careers Yet</h3>
+            <a href="expl   orer.html" class="btn btn-primary">Explore Careers</a>
+        </div>
+    </div>
+
+    <!-- Quiz Results -->
+    <!-- Quiz Results tab -->
+<div id="quiz-results-tab" class="journey-content">
+  <div id="no-quiz-results" style="display:none">
+    No Quiz Results Yet
+  </div>
+
+  <div id="quiz-results-list"></div>
+</div>
+
+
+    <!-- Progress -->
+    <div id="progress-tab" class="journey-content">
+        <div id="progress-list"></div>
+
+        <div id="no-progress" class="empty-state" style="display:none;">
+            <h3>No Progress Yet</h3>
+            <a href="explorer.html" class="btn btn-primary">Start Exploring</a>
+        </div>
+    </div>
+
+    <span id="total-courses"></span>
+<span id="completed-milestones"></span>
+<span id="progress-percentage"></span>
+<span id="days-active"></span>
+
+</div>
+
+<!-- ================= SCRIPTS ================= -->
+
+<script src="js/config.js"></script>
+
+<script src="js/api.js"></script>
+<script src="js/translate.js"></script> 
+
+<script src="js/auth.js"></script>
+
+<script src="js/journey.js"></script><!-- only on journey.html -->
+
+
+<script>
+console.log('✅ Script loading check:');
+console.log('  - config.js:', !!window.API_ENDPOINTS);
+console.log('  - api.js:', !!window.APIService);
+console.log('  - apiService instance:', !!window.apiService);
+</script>
+
+<!-- 🔐 LOGIN PROTECTION -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const idToken = localStorage.getItem("idToken");
+
+    // Not logged in → redirect
+    if (!idToken) {
+        window.location.href = "login.html";
+        return;
+    }
+
+    // Update navbar
+    const authButtons = document.getElementById("auth-buttons");
+    const userMenu = document.getElementById("user-menu");
+    const usernameSpan = document.getElementById("username");
+
+    authButtons.style.display = "none";
+    userMenu.style.display = "flex";
+
+    try {
+        const payload = JSON.parse(atob(idToken.split(".")[1]));
+        usernameSpan.textContent = payload.email || "User";
+    } catch (e) {
+        localStorage.clear();
+        window.location.href = "login.html";
+    }
+});
+
+// Logout via Cognito Hosted UI
+function logout() {
+    localStorage.clear();
+    window.location.href =
+      "https://ap-south-1fzlcxymni.auth.ap-south-1.amazoncognito.com/logout" +
+      "?client_id=no8u3mv9ivnuhj6b0c5e20jfp" +
+      "&logout_uri=https://dyrse1k3951wn.cloudfront.net/login.html";
+}
+</script>
+
+
+
+
+<script>
+// Apply translation when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // If translation service is available and language is not English
+    if (window.TranslationService && TranslationService.currentLanguage !== 'en') {
+        console.log('🔄 Applying translation to page...');
+        
+        // Small delay to ensure DOM is fully loaded
+        setTimeout(() => {
+            translatePageContent();
+        }, 500);
+    }
+});
+
+// Function to translate all text content on the page
+async function translatePageContent() {
+    if (!window.TranslationService) return;
+    
+    const elementsToTranslate = [
+        // Navigation and headers
+        ...document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, a, button, span, label'),
+        // Specific elements by class or ID
+        ...document.querySelectorAll('.nav-link, .btn, .logo, .footer-text'),
+        // Hero section
+        ...document.querySelectorAll('.hero-title, .hero-subtitle, .hero-description'),
+        // Career cards
+        ...document.querySelectorAll('.career-card h3, .career-card p, .career-card .career-category'),
+        // Filter buttons
+        ...document.querySelectorAll('.filter-btn'),
+        // Placeholder text
+        document.querySelector('input[placeholder]')
+    ].filter(el => el && el.innerText && el.innerText.trim() !== '');
+    
+    console.log(`Found ${elementsToTranslate.length} elements to translate`);
+    
+    for (const element of elementsToTranslate) {
+        // Skip elements that should not be translated
+        if (element.tagName === 'INPUT' && element.placeholder) {
+            // Translate placeholder
+            const originalPlaceholder = element.placeholder;
+            if (originalPlaceholder && !originalPlaceholder.startsWith('_translated_')) {
+                try {
+                    const translated = await TranslationService.translateText(originalPlaceholder);
+                    element.placeholder = translated;
+                } catch (error) {
+                    console.warn('Failed to translate placeholder:', error);
+                }
+            }
+        } else if (element.innerText && !element.innerText.startsWith('_translated_')) {
+            // Translate inner text
+            const originalText = element.innerText;
+            if (originalText && !originalText.match(/^\d+$/) && originalText.length > 1) {
+                try {
+                    const translated = await TranslationService.translateText(originalText);
+                    element.innerText = translated;
+                } catch (error) {
+                    console.warn('Failed to translate text:', error);
+                }
+            }
+        }
+    }
+    
+    console.log('✅ Page translation complete');
+}
+
+// Listen for language changes
+document.addEventListener('languageChanged', function() {
+    console.log('Language changed, reloading page...');
+    window.location.reload();
+});
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Career Explorer - Login</title>
+
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body>
+
+<div class="auth-container">
+  <div class="auth-card">
+    <h2><i class="fas fa-compass"></i> Login to Career Explorer</h2>
+
+    <button class="btn btn-primary btn-block" onclick="loginWithCognito()">
+      <i class="fas fa-sign-in-alt"></i> Login with AWS Cognito
+    </button>
+
+    <p class="auth-footer">
+      New user? Account creation happens on Cognito login page
+    </p>
+  </div>
+</div>
+
+<script src="config.js"></script>
+
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1482.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/amazon-cognito-identity-js/6.3.1/amazon-cognito-identity.min.js"></script>
+
+<script src="auth.js"></script>
+
+
+<script>
+/*********************************
+ * COGNITO CONFIG
+ *********************************/
+const COGNITO_DOMAIN =
+"https://ap-south-1vo8aorzve.auth.ap-south-1.amazoncognito.com";
+
+const CLIENT_ID =
+"4orjkubrmmcmtla5jdr2d94r5f";
+
+const REDIRECT_URI =
+"https://dvz9jsf7udmwn.cloudfront.net/login.html";
+
+
+/*********************************
+ * LOGIN BUTTON
+ *********************************/
+function loginWithCognito() {
+
+    const loginUrl =
+        `${COGNITO_DOMAIN}/login?` +
+        `client_id=${CLIENT_ID}` +
+        `&response_type=code` +
+        `&scope=email+openid+profile` +
+        `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`;
+
+    window.location.href = loginUrl;
+}
+
+
+/*********************************
+ * HANDLE CALLBACK
+ *********************************/
+async function handleCognitoCallback() {
+
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+
+    if (!code) return;
+
+   const tokenEndpoint =
+"https://ap-south-1vo8aorzve.auth.ap-south-1.amazoncognito.com/oauth2/token";
+
+
+    const body = new URLSearchParams({
+        grant_type: "authorization_code",
+        client_id: CLIENT_ID,
+        code: code,
+        redirect_uri: REDIRECT_URI
+    });
+
+    const response = await fetch(tokenEndpoint, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body
+    });
+
+    const data = await response.json();
+
+    if (data.error) {
+        console.error("Token error:", data);
+        alert("Login failed");
+        return;
+    }
+
+    const payload = JSON.parse(atob(data.id_token.split(".")[1]));
+
+    localStorage.setItem("idToken", data.id_token);
+    localStorage.setItem("accessToken", data.access_token);
+    localStorage.setItem("refreshToken", data.refresh_token);
+    localStorage.setItem("userId", payload.sub);
+    localStorage.setItem("userEmail", payload.email);
+
+    window.history.replaceState({}, document.title, "/login.html");
+
+    window.location.href = "index.html";
+}
+
+handleCognitoCallback();
+</script>
+
+
+</body>
+</html>
